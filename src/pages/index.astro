@@ -1,0 +1,17 @@
+---
+import PortalLayout from '@/components/PortalLayout.astro';
+import {getPortalContext} from '@/lib/portal.mjs';
+const {navItems, brandHref, brandLabel, ecosystemConfigJson} = getPortalContext();
+---
+
+<PortalLayout
+  title="Для детей — IT Universe"
+  description="kids.spirzen.ru"
+  brandLabel={brandLabel}
+  brandHref={brandHref}
+  navItems={navItems}
+  ecosystemConfigJson={ecosystemConfigJson}
+>
+  <div class="portal-hero"><h1>IT для детей</h1></div>
+  <div class="placeholder-card"><h2>В разработке</h2></div>
+</PortalLayout>
