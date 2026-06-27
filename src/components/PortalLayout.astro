@@ -2,6 +2,9 @@
 import EcosystemNav from './EcosystemNav.astro';
 import '../styles/tokens.css';
 import '../styles/layout.css';
+import '../styles/article.css';
+import '../styles/article-chrome.css';
+import '../styles/itu-loader.css';
 
 /** @typedef {{ id: string, label: string, href: string, active?: boolean }} NavItem */
 
@@ -12,7 +15,9 @@ interface Props {
   brandHref: string;
   navItems: NavItem[];
   hasSidebar?: boolean;
+  hasToc?: boolean;
   ecosystemConfigJson?: string;
+  portalVariant?: 'default' | 'kids';
 }
 
 const {
@@ -22,12 +27,14 @@ const {
   brandHref,
   navItems,
   hasSidebar = false,
+  hasToc = false,
   ecosystemConfigJson = '{}',
+  portalVariant = 'kids',
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-portal={portalVariant}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -56,7 +63,7 @@ const {
   </head>
   <body>
     <EcosystemNav brandLabel={brandLabel} brandHref={brandHref} navItems={navItems} />
-    <div class:list={['portal-shell', hasSidebar && 'has-sidebar']}>
+    <div class:list={['portal-shell', hasSidebar && 'has-sidebar', hasToc && 'has-toc']}>
       <slot name="sidebar" />
       <main class="portal-main" id="main-content">
         <div class="portal-content">
@@ -64,8 +71,8 @@ const {
         </div>
       </main>
     </div>
-    <script type="module">
-      import '@/lib/theme.js';
+    <script>
+      import '../scripts/portal-client.js';
     </script>
   </body>
 </html>

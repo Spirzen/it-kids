@@ -21,7 +21,51 @@
   --itu-radius-sm: 8px;
   --itu-content-width: 760px;
   --itu-sidebar-width: 280px;
+  --itu-toc-width: 240px;
   --itu-nav-height: 56px;
+}
+
+:root[data-portal='kids'] {
+  --itu-font-sans: 'Segoe UI', 'Nunito', system-ui, sans-serif;
+  --itu-bg: #fff8f0;
+  --itu-bg-elevated: #ffffff;
+  --itu-bg-subtle: #ffedd5;
+  --itu-text: #3d2c1e;
+  --itu-text-muted: #7c6a58;
+  --itu-border: #f0dcc8;
+  --itu-accent: #ea580c;
+  --itu-accent-soft: #ffedd5;
+  --itu-accent-hover: #c2410c;
+  --itu-link: #2563eb;
+  --itu-link-hover: #1d4ed8;
+  --itu-nav-bg: rgba(255, 248, 240, 0.94);
+  --itu-shadow: 0 10px 40px rgba(234, 88, 12, 0.1);
+  --itu-radius: 18px;
+}
+
+:root[data-portal='kids'][data-theme='dark'],
+:root[data-portal='kids'].dark {
+  --itu-bg: #1a1410;
+  --itu-bg-elevated: #241c16;
+  --itu-bg-subtle: #2e241c;
+  --itu-text: #fef3e7;
+  --itu-text-muted: #c4b5a5;
+  --itu-border: #4a3d32;
+  --itu-accent: #fb923c;
+  --itu-accent-soft: #431407;
+  --itu-accent-hover: #fdba74;
+  --itu-link: #93c5fd;
+  --itu-link-hover: #bfdbfe;
+  --itu-nav-bg: rgba(26, 20, 16, 0.94);
+}
+
+:root[data-portal='kids'] body {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+:root[data-portal='kids'] .portal-hero--kids h1 {
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
 }
 
 :root[data-theme='dark'],

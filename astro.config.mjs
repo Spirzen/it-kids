@@ -11,6 +11,7 @@ export default defineConfig({
   site,
   base,
   output: 'static',
+  trailingSlash: 'never',
   integrations: [patchAstroRedirects()],
   vite: {
     resolve: {

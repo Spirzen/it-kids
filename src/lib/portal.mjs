@@ -5,7 +5,7 @@ export function getPortalContext() {
   return {
     config,
     navItems: buildNavItems(config, 'kids'),
-    brandHref: `${resolvePortalBase(config, 'kids')}/`,
+    brandHref: `${resolvePortalBase(config, 'kids')}/kids/intro`,
     brandLabel: 'IT для детей',
     ecosystemConfigJson: JSON.stringify({
       postMessage: config.postMessage,

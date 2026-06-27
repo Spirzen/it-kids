@@ -1,0 +1,93 @@
+---
+import path from 'node:path';
+import {findRepoRoot} from '@/lib/ecosystem.mjs';
+import {loadPortalPages} from '@/lib/content/load-pages.mjs';
+import {getPortalContext} from '@/lib/portal.mjs';
+import PortalLayout from '@/components/PortalLayout.astro';
+import PortalSidebar from '@/components/PortalSidebar.astro';
+import ArticleBreadcrumbs from '@/components/ArticleBreadcrumbs.astro';
+import ArticleToolbar from '@/components/ArticleToolbar.astro';
+import ArticleToc from '@/components/ArticleToc.astro';
+
+export async function getStaticPaths() {
+  const contentDir = path.join(findRepoRoot(), 'content/kids');
+  const portal = await loadPortalPages(contentDir);
+  return portal.pages.map((page) => ({
+    params: {slug: page.pathSlug},
+    props: {page, sidebar: portal.sidebar},
+  }));
+}
+
+const {page, sidebar} = Astro.props;
+const {navItems, brandHref, brandLabel, ecosystemConfigJson} = getPortalContext();
+
+const sidebarItems = sidebar.map((item) => {
+  if (item.type === 'category') {
+    const childActive = item.children.some((child) => child.href === page.href);
+    return {
+      ...item,
+      active: item.href === page.href,
+      open: childActive || item.href === page.href || page.categoryKey === item.categoryKey,
+      children: item.children.map((child) => ({
+        ...child,
+        active: child.href === page.href,
+      })),
+    };
+  }
+  return {...item, active: item.href === page.href};
+});
+---
+
+<PortalLayout
+  title={`${page.title} — Для детей IT Universe`}
+  description={page.description || 'IT для школьников 8–16 лет'}
+  brandLabel={brandLabel}
+  brandHref={brandHref}
+  navItems={navItems}
+  hasSidebar={true}
+  hasToc={page.toc.length > 1}
+  ecosystemConfigJson={ecosystemConfigJson}
+  portalVariant="kids"
+>
+  <PortalSidebar slot="sidebar" title="Маршрут" items={sidebarItems} />
+
+  <ArticleBreadcrumbs items={page.breadcrumbs} />
+
+  <header class="portal-hero portal-hero--kids">
+    <h1>{page.title}</h1>
+    {page.description ? <p>{page.description}</p> : null}
+  </header>
+
+  <ArticleToolbar title={page.title} href={page.href} />
+
+  <div class="article-layout">
+    <article class="article-shell">
+      <div class="article-body" set:html={page.bodyHtml} />
+    </article>
+    <ArticleToc items={page.toc} />
+  </div>
+
+  {
+    page.relatedLinks.length > 0 ? (
+      <aside class="related-topics" aria-label="Связанные темы">
+        <h2>Связанные темы</h2>
+        <ul>
+          {page.relatedLinks.map((link) => (
+            <li>
+              <a href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined}>
+                {link.title}
+                {link.external ? ' ↗' : ''}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    ) : null
+  }
+
+  <footer class="portal-footer">
+    <p>
+      Часть экосистемы <a href={navItems.find((n) => n.id === 'spirzen')?.href}>Вселенная IT</a>.
+    </p>
+  </footer>
+</PortalLayout>
