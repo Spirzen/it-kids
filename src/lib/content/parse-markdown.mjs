@@ -100,7 +100,6 @@ function prepareBody(content, relPath) {
   body = stripJsxComments(body);
   body = transformPlayEmbeds(body);
   body = transformCodeEmbeds(body);
-  body = body.replace(/<RandomGameGenerator\s*\/>/g, transformRandomGameGenerator());
   body = body.replace(/<DocCardList\s*\/>/g, '<!-- DOC_CARD_LIST -->');
   body = stripRemainingJsx(body);
   body = fixCrossPortalLinks(body);
@@ -109,14 +108,6 @@ function prepareBody(content, relPath) {
   return body.trim();
 }
 
-function transformRandomGameGenerator() {
-  return [
-    '<div class="itu-game-generator-stub">',
-    '<p><strong>Интерактивный генератор игр</strong> — полный каталог на',
-    ' <a href="https://tools.spirzen.ru/tools/games/4">tools.spirzen.ru</a>.</p>',
-    '</div>',
-  ].join(' ');
-}
 
 function transformCodeEmbeds(content) {
   return content.replace(/<ExternalCodeEmbed\s+([\s\S]*?)\/>/g, (_, attrs) => {
